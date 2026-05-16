@@ -1,0 +1,52 @@
+<!-- templates/students.html -->
+{% extends 'base.html' %}
+{% block title %}Students{% endblock %}
+{% block content %}
+<h2>Student List</h2>
+<form method="POST" action="{{ url_for('add_student') }}">
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <button type="submit">Add Student</button>
+</form>
+
+<p>Total Students: {{ students|length }}</p>
+
+
+<h2>Student Management System</h2>
+
+  {% if current_user.role == 'admin' %}
+    ### Add New Student
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      {{ form.full_name.label }} {{ form.full_name() }}<br><br>
+      {{ form.email.label }} {{ form.email() }}<br><br>
+      {{ form.submit(class="btn btn-primary") }}
+    </form>
+    <hr>
+  {% endif %}
+
+  ### Student Master List
+  <ul>
+    {% for student in students %}
+      <li>
+        {{ student.full_name }} ({{ student.email }})
+        
+        {% if current_user.role == 'admin' %}
+          <form action="{{ url_for('delete_student', student_id=student.id) }}" method="POST" style="display:inline; margin-left:10px;">
+            <button type="submit" style="color: red; background: none; border: none; cursor: pointer;">[Delete]</button>
+          </form>
+        {% endif %}
+      </li>
+
+
+
+<ul>
+    {% for student in students %}
+        <!-- Display Student Count in Students Page -->
+        <li><strong>{{ student.full_name }}</strong>({{ student.email }}) -
+            <a href="{{ url_for('delete_student', id=student.id) }}">Delete</a>
+        </li>
+        
+    {% endfor %}
+</ul>
+{% endblock %}

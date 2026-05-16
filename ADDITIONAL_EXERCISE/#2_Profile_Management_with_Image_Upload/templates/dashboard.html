@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>User Account Dashboard</h2>
+  
+  <div style="margin-bottom: 20px;">
+    <img src="{{ url_for('static', filename='uploads/' + current_user.image_filename) }}" alt="Profile Picture" width="120" style="border-radius: 50%; object-fit: cover;">
+    ### Welcome, {{ current_user.display_name if current_user.display_name else 'User' }}!
+  </div>
+
+  <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div>
+      {{ form.display_name.label }}<br>
+      {{ form.display_name(class="input-field") }}
+    </div>
+    <br>
+    <div>
+      {{ form.profile_picture.label }}<br>
+      {{ form.profile_picture() }}
+    </div>
+    <br>
+    {{ form.submit(class="btn btn-primary") }}
+  </form>
+{% endblock %}
